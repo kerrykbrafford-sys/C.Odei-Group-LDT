@@ -86,7 +86,7 @@ export const FeaturedProduct: React.FC<FeaturedProductProps> = ({ onOpenOrder })
             {/* Main Image */}
             <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl border-4 border-white/30">
               <img
-                src="https://drive.google.com/uc?export=view&id=1EKdMNIA9EpJOOkpIX72yS_mHuTpP2C3S"
+                src="/images/cement-blocks.jpg"
                 alt="Stack of Cement Blocks"
                 className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
               />
