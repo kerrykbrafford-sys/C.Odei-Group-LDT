@@ -11,12 +11,21 @@ import { Projects } from './components/Projects';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
 import { ContactModal } from './components/ContactModal';
+import { OrderForm } from './components/OrderForm';
 
 const App: React.FC = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<string>('');
 
   const openContact = () => setIsContactOpen(true);
   const closeContact = () => setIsContactOpen(false);
+
+  const openOrder = (productId?: string) => {
+    setSelectedProduct(productId || '');
+    setIsOrderOpen(true);
+  };
+  const closeOrder = () => setIsOrderOpen(false);
 
   return (
     <div className="font-sans text-dark antialiased">
@@ -24,8 +33,8 @@ const App: React.FC = () => {
       <NavBar onOpenContact={openContact} />
       <main>
         <Hero onOpenContact={openContact} />
-        <FeaturedProduct />
-        <ProductShowcase />
+        <FeaturedProduct onOpenOrder={() => openOrder('cement-blocks')} />
+        <ProductShowcase onOpenOrder={openOrder} />
         <Services />
         <About />
         <Stats />
@@ -34,6 +43,7 @@ const App: React.FC = () => {
       </main>
       <Footer />
       <ContactModal isOpen={isContactOpen} onClose={closeContact} />
+      <OrderForm isOpen={isOrderOpen} onClose={closeOrder} preSelectedProduct={selectedProduct} />
     </div>
   );
 };

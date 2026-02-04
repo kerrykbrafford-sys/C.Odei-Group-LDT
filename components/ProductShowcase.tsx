@@ -66,7 +66,20 @@ const products: Product[] = [
   }
 ];
 
-export const ProductShowcase: React.FC = () => {
+interface ProductShowcaseProps {
+  onOpenOrder: (productId: string) => void;
+}
+
+// Map product names to IDs for Order Form
+const productNameToId: { [key: string]: string } = {
+  'Iron Rods': 'iron-rods',
+  'Iron Nails': 'iron-nails',
+  'Cement': 'cement',
+  'Binding Wires': 'binding-wires',
+  'Cement Blocks': 'cement-blocks',
+};
+
+export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenOrder }) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   return (
@@ -74,7 +87,7 @@ export const ProductShowcase: React.FC = () => {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -82,7 +95,7 @@ export const ProductShowcase: React.FC = () => {
           >
             Our Catalog
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -91,7 +104,7 @@ export const ProductShowcase: React.FC = () => {
           >
             Premium Building Materials
           </motion.h2>
-          <motion.div 
+          <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
@@ -114,32 +127,32 @@ export const ProductShowcase: React.FC = () => {
               whileHover={{ y: -5 }}
             >
               <motion.div layoutId={`product-image-${product.id}`} className="h-64 overflow-hidden relative bg-gray-100">
-                 <div className="absolute inset-0 bg-dark/10 group-hover:bg-dark/0 transition-colors z-10" />
-                 <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                 
-                 {/* Hover Badge */}
-                 <div className="absolute bottom-4 right-4 z-20 bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                 </div>
+                <div className="absolute inset-0 bg-dark/10 group-hover:bg-dark/0 transition-colors z-10" />
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+
+                {/* Hover Badge */}
+                <div className="absolute bottom-4 right-4 z-20 bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                  <ArrowRight className="w-5 h-5 text-primary" />
+                </div>
               </motion.div>
-              
+
               <div className="p-6">
                 <motion.h3 layoutId={`product-title-${product.id}`} className="text-2xl font-heading font-bold text-dark mb-2 group-hover:text-primary transition-colors">
                   {product.name}
                 </motion.h3>
                 <p className="text-gray-500 line-clamp-2 text-sm mb-4">{product.description}</p>
-                
+
                 <div className="flex flex-wrap gap-2">
-                    {product.specs.slice(0, 3).map((spec, i) => (
-                        <span key={i} className="text-xs font-medium bg-light text-secondary px-2 py-1 rounded border border-orange-100">
-                            {spec}
-                        </span>
-                    ))}
-                    {product.specs.length > 3 && (
-                        <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2 py-1 rounded">
-                            +{product.specs.length - 3} more
-                        </span>
-                    )}
+                  {product.specs.slice(0, 3).map((spec, i) => (
+                    <span key={i} className="text-xs font-medium bg-light text-secondary px-2 py-1 rounded border border-orange-100">
+                      {spec}
+                    </span>
+                  ))}
+                  {product.specs.length > 3 && (
+                    <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2 py-1 rounded">
+                      +{product.specs.length - 3} more
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -150,7 +163,7 @@ export const ProductShowcase: React.FC = () => {
         <AnimatePresence>
           {selectedProduct && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-               {/* Backdrop */}
+              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -165,7 +178,7 @@ export const ProductShowcase: React.FC = () => {
                 className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden relative z-10 flex flex-col md:flex-row max-h-[90vh] md:max-h-[600px]"
               >
                 {/* Close Button */}
-                <button 
+                <button
                   onClick={() => setSelectedProduct(null)}
                   className="absolute top-4 right-4 z-50 bg-white/80 hover:bg-white p-2 rounded-full transition-colors backdrop-blur-sm shadow-sm"
                 >
@@ -173,52 +186,55 @@ export const ProductShowcase: React.FC = () => {
                 </button>
 
                 {/* Left: Image */}
-                <motion.div 
-                    layoutId={`product-image-${selectedProduct.id}`}
-                    className="w-full md:w-1/2 h-64 md:h-auto relative bg-gray-100"
+                <motion.div
+                  layoutId={`product-image-${selectedProduct.id}`}
+                  className="w-full md:w-1/2 h-64 md:h-auto relative bg-gray-100"
                 >
-                   <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
+                  <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
                 </motion.div>
 
                 {/* Right: Details */}
                 <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col overflow-y-auto">
-                   <div className="mb-auto">
-                        <span className="text-primary font-bold uppercase tracking-widest text-xs mb-2 block">Product Details</span>
-                        <motion.h2 layoutId={`product-title-${selectedProduct.id}`} className="text-3xl md:text-4xl font-heading font-bold text-dark mb-4">
-                            {selectedProduct.name}
-                        </motion.h2>
-                        
-                        <p className="text-gray-600 text-lg mb-8 leading-relaxed border-l-4 border-primary pl-4">
-                            {selectedProduct.description}
-                        </p>
-                        
-                        <div className="mb-8 bg-light p-6 rounded-xl border border-orange-100">
-                            <h4 className="font-bold text-dark flex items-center gap-2 mb-4 text-lg">
-                                <Ruler className="w-5 h-5 text-primary" />
-                                Available Specifications
-                            </h4>
-                            <div className="grid grid-cols-2 gap-3">
-                                {selectedProduct.specs.map((spec, idx) => (
-                                    <div key={idx} className="flex items-center space-x-2 bg-white p-3 rounded shadow-sm">
-                                        <Check className="w-4 h-4 text-primary" />
-                                        <span className="font-medium text-dark">{spec}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                   </div>
+                  <div className="mb-auto">
+                    <span className="text-primary font-bold uppercase tracking-widest text-xs mb-2 block">Product Details</span>
+                    <motion.h2 layoutId={`product-title-${selectedProduct.id}`} className="text-3xl md:text-4xl font-heading font-bold text-dark mb-4">
+                      {selectedProduct.name}
+                    </motion.h2>
 
-                   <div className="pt-6 border-t border-gray-100 mt-6">
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <Button fullWidth onClick={() => alert("Order placed!")} className="flex items-center justify-center gap-2">
-                                <ShoppingCart className="w-5 h-5" />
-                                Place Order
-                            </Button>
-                            <Button fullWidth variant="white" onClick={() => setSelectedProduct(null)}>
-                                Close Details
-                            </Button>
-                        </div>
-                   </div>
+                    <p className="text-gray-600 text-lg mb-8 leading-relaxed border-l-4 border-primary pl-4">
+                      {selectedProduct.description}
+                    </p>
+
+                    <div className="mb-8 bg-light p-6 rounded-xl border border-orange-100">
+                      <h4 className="font-bold text-dark flex items-center gap-2 mb-4 text-lg">
+                        <Ruler className="w-5 h-5 text-primary" />
+                        Available Specifications
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        {selectedProduct.specs.map((spec, idx) => (
+                          <div key={idx} className="flex items-center space-x-2 bg-white p-3 rounded shadow-sm">
+                            <Check className="w-4 h-4 text-primary" />
+                            <span className="font-medium text-dark">{spec}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-100 mt-6">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button fullWidth onClick={() => {
+                        setSelectedProduct(null);
+                        onOpenOrder(productNameToId[selectedProduct.name] || '');
+                      }} className="flex items-center justify-center gap-2">
+                        <ShoppingCart className="w-5 h-5" />
+                        Place Order
+                      </Button>
+                      <Button fullWidth variant="white" onClick={() => setSelectedProduct(null)}>
+                        Close Details
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>
